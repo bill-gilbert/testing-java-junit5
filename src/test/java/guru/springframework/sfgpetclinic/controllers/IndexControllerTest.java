@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Executable;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class IndexControllerTest {
@@ -25,6 +27,6 @@ class IndexControllerTest {
 
     @Test
     void oupsHandler() {
-        assertEquals("notimplemented", indexController.oupsHandler());
+        assertThrows(ValueNotFoundException.class, () -> indexController.oupsHandler());
     }
 }
