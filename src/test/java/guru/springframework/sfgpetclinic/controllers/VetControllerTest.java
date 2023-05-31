@@ -36,6 +36,8 @@ class VetControllerTest {
         String view = vetController.listVets(model);
         assertThat(view).isEqualTo("vets/index");
         assertThat(model.getMap().size()).isEqualTo(1);
+        Set<Vet> vets = (Set)model.getMap().get("vets");
         assertThat(((Set)model.getMap().get("vets")).size()).isEqualTo(2);
+        assertThat(vets).hasSize(2);
     }
 }
