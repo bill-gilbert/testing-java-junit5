@@ -68,6 +68,23 @@ public class OwnerMapserviceTest {
                 Owner savedOwner = ownerMapService.save(owner);
                 assertThat(savedOwner).isNotNull();
             }
+
+            @DisplayName("Save owner Tests - ")
+            @Nested
+            class FindOwnersTests {
+                @Test
+                void findOwner() {
+                    Owner owner = ownerMapService.findById(1L);
+                    assertThat(owner).isNotNull();
+                }
+
+                @Test
+                void findOwnerNotFound() {
+                    Owner owner = ownerMapService.findById(2L);
+                    assertThat(owner).isNull();
+                }
+
+            }
         }
     }
 
