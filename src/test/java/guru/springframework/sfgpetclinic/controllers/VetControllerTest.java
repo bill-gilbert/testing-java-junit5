@@ -1,7 +1,8 @@
 package guru.springframework.sfgpetclinic.controllers;
 
+import guru.springframework.sfgpetclinic.ControllerTests;
+import guru.springframework.sfgpetclinic.fauxspring.Model;
 import guru.springframework.sfgpetclinic.fauxspring.ModelMapImpl;
-import guru.springframework.sfgpetclinic.model.Speciality;
 import guru.springframework.sfgpetclinic.model.Vet;
 import guru.springframework.sfgpetclinic.services.SpecialtyService;
 import guru.springframework.sfgpetclinic.services.VetService;
@@ -14,30 +15,37 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VetControllerTest {
+class VetControllerTest implements ControllerTests {
+
     VetService vetService;
+    SpecialtyService specialtyService;
+
     VetController vetController;
 
     @BeforeEach
     void setUp() {
-        SpecialtyService specialtyService = new SpecialityMapService();
+        specialtyService = new SpecialityMapService();
         vetService = new VetMapService(specialtyService);
+
         vetController = new VetController(vetService);
 
-        Vet jimmy = new Vet(1L, "Jimmy", "Doe", Set.of(new Speciality(1L, "Therapy")));
-        Vet alex = new Vet(2L, "Alex", "Smirnoff", Set.of(new Speciality(2L, "Surgery")));
-        vetService.save(jimmy);
-        vetService.save(alex);
+        Vet vet1 = new Vet(1L, "joe", "buck", null);
+        Vet vet2 = new Vet(2L, "Jimmy", "Smith", null);
+
+        vetService.save(vet1);
+        vetService.save(vet2);
     }
 
     @Test
     void listVets() {
-        ModelMapImpl model = new ModelMapImpl();
+        Model model = new ModelMapImpl();
+
         String view = vetController.listVets(model);
-        assertThat(view).isEqualTo("vets/index");
-        assertThat(model.getMap().size()).isEqualTo(1);
-        Set<Vet> vets = (Set)model.getMap().get("vets");
-        assertThat(((Set)model.getMap().get("vets")).size()).isEqualTo(2);
-        assertThat(vets).hasSize(2);
+
+        assertThat("vets/index").isEqualTo(view);
+
+        Set modelAttribute = (Set) ((ModelMapImpl) model).getMap().get("vets");
+
+        assertThat(modelAttribute.size()).isEqualTo(2);
     }
 }

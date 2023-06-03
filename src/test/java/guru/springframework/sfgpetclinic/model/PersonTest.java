@@ -1,26 +1,32 @@
 package guru.springframework.sfgpetclinic.model;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
+import guru.springframework.sfgpetclinic.ModelTests;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Tag("model")
-class PersonTest {
+class PersonTest implements ModelTests {
 
-    @BeforeEach
-    void beforeEach() {
+    @Test
+    void groupedAssertions() {
+        //given
+        Person person = new Person(1l, "Joe", "Buck");
 
+        //then
+        assertAll("Test Props Set",
+                () -> assertEquals(person.getFirstName(), "Joe"),
+                () -> assertEquals(person.getLastName(), "Buck"));
     }
 
     @Test
-    void groupAssert() {
-        Person person = new Person(1L, "Joe", "Down");
-        assertAll("Check Person",
-                () -> assertEquals("Joe", person.getFirstName()),
-                () -> assertEquals("Down", person.getLastName()));
-        assertEquals(Long.valueOf(1), person.getId(), "Id must be equals");
+    void groupedAssertionMsgs() {
+        //given
+        Person person = new Person(1l, "Joe", "Buck");
+
+        //then
+        assertAll("Test Props Set",
+                () -> assertEquals(person.getFirstName(), "Joe", "First Name Failed"),
+                () -> assertEquals(person.getLastName(), "Buck", "Last Name Failed"));
     }
 }

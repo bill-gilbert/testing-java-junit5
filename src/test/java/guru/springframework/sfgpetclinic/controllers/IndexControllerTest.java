@@ -1,78 +1,108 @@
 package guru.springframework.sfgpetclinic.controllers;
 
-import org.junit.jupiter.api.BeforeAll;
+import guru.springframework.sfgpetclinic.ControllerTests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnOs;
-import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.condition.*;
 
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
-import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-@Tag("controllers")
-class IndexControllerTest {
-    private static IndexController indexController;
+class IndexControllerTest implements ControllerTests {
 
-    @BeforeAll
-    static void beforeAll() {
-        indexController = new IndexController();
-    }
+    IndexController controller;
 
     @BeforeEach
     void setUp() {
+        controller = new IndexController();
     }
 
+    @DisplayName("Test Proper View name is returned for index page")
     @Test
     void index() {
-        assertEquals("index", indexController.index());
-        assertThat(indexController.index()).isEqualTo("index");
+        assertEquals("index", controller.index());
+        assertEquals("index", controller.index(), "Wrong View Returned");
+
+        assertEquals("index", controller.index(), () -> "Another Expensive Message " +
+                "Make me only if you have to");
+
+        assertThat(controller.index()).isEqualTo("index");
     }
 
     @Test
+    @DisplayName("Test exception")
     void oupsHandler() {
-        assertThrows(ValueNotFoundException.class, () -> indexController.oupsHandler());
+        assertThrows(ValueNotFoundException.class, () -> {
+            controller.oopsHandler();
+        });
     }
 
-    @Disabled
+    @Disabled("Demo of timeout")
     @Test
-    void testTimeout() {
+    void testTimeOut() {
+
         assertTimeout(Duration.ofMillis(100), () -> {
-            Thread.sleep(2000);
+            Thread.sleep(5000);
+
             System.out.println("I got here");
         });
     }
 
-    @Disabled
+    @Disabled("Demo of timeout")
     @Test
-    void testTimeoutGood() {
+    void testTimeOutPrempt() {
+
         assertTimeoutPreemptively(Duration.ofMillis(100), () -> {
-            Thread.sleep(150);
-            fail("Can't be run");
+            Thread.sleep(5000);
+
+            System.out.println("I got here 2342342342342");
         });
     }
 
     @Test
     void testAssumptionTrue() {
+
+        assumeTrue("GURU".equalsIgnoreCase(System.getenv("GURU_RUNTIME")));
+    }
+
+    @Test
+    void testAssumptionTrueAssumptionIsTrue() {
+
         assumeTrue("GURU".equalsIgnoreCase("GURU"));
+    }
+
+    @EnabledOnOs(OS.MAC)
+    @Test
+    void testMeOnMacOS() {
     }
 
     @EnabledOnOs(OS.WINDOWS)
     @Test
-    void testOnWindows() {
+    void testMeOnWindows() {
     }
 
-    @EnabledOnOs(OS.LINUX)
+    @EnabledOnJre(JRE.JAVA_8)
     @Test
-    void testOnLinux() {
-        fail("Test must run");
+    void testMeOnJava8() {
+    }
+
+    @EnabledOnJre(JRE.JAVA_11)
+    @Test
+    void testMeOnJava11() {
+    }
+
+    @EnabledIfEnvironmentVariable(named = "USER", matches = "jt")
+    @Test
+    void testIfUserJT() {
+    }
+
+    @EnabledIfEnvironmentVariable(named = "USER", matches = "fred")
+    @Test
+    void testIfUserFred() {
     }
 }
