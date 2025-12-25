@@ -1,0 +1,26 @@
+package guru.springframework.sfgpetclinic.model;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class PersonTest {
+    @Test
+    void groupedAssertions() {
+        //given
+        Person person = new Person(1L, "Joe", "Buck");
+        //then
+        assertAll("Test Props Set", ()->assertEquals("Joe", person.getFirstName()),
+                ()-> assertEquals("Buck", person.getLastName()));
+    }
+
+    @Test
+    void groupedAssertionsMsgs() {
+        //given
+        Person person = new Person(1l, "Joe", "Buck");
+        //then
+        assertAll("Test Props Set", ()->assertEquals( "Joe", person.getFirstName(), "Get First Name failed"),
+                ()-> assertEquals("Buck", person.getLastName(), "Get Last Name failed"));
+    }
+
+}
