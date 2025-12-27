@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.JRE;
 
 import java.time.Duration;
 
@@ -52,5 +54,10 @@ class IndexControllerTest {
     @Test
     void testAssumptionFalse() {
         assumeTrue("GURU".equalsIgnoreCase("NOT_GURU"));
+    }
+
+    @EnabledOnJre(JRE.JAVA_11)
+    @Test
+    void enableOnJre21() {
     }
 }
