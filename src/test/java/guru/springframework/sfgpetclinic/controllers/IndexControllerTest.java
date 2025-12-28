@@ -11,6 +11,7 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class IndexControllerTest {
@@ -55,7 +56,7 @@ class IndexControllerTest {
 
     @Test
     void testAssumptionFalse() {
-        assumeTrue("GURU".equalsIgnoreCase("NOT_GURU"));
+        assumeFalse("GURU".equalsIgnoreCase("NOT_GURU"));
     }
 
     @EnabledOnJre(JRE.JAVA_11)
