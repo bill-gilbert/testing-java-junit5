@@ -9,6 +9,7 @@ import org.junit.jupiter.api.condition.JRE;
 
 import java.time.Duration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -32,6 +33,7 @@ class IndexControllerTest {
     void oupsHandler() {
         // assertEquals("notimplemented", controller.oupsHandler(), () -> "Wrong View return");
         assertThrows(ValueNotFounException.class, ()-> controller.oupsHandler());
+        assertThat(controller.index()).isEqualTo("index");
     }
 
     @Disabled("Demo of timeout")
